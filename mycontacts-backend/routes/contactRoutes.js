@@ -1,32 +1,17 @@
+// Import controller methods
+const { getAllContacts, createContact, getContact, updateContact, deleteContact } = require('../controllers/contactController');
+
+// Create a Router
 const express = require('express');
 const router = express.Router();
 
 // Define each Route, and then use .get() method to handle GET request
 
-// @desc    Get all contacts
-router.route('/').get((req, res) => {
-    res.status(200).json({ message: 'Get all Contacts' });
-})
+// @desc    Get all contacts && Create a contact
+router.route('/').get(getAllContacts).post(createContact);
 
-// @desc    Create a contact
-router.route('/').post((req, res) => {
-    res.status(200).json({ message: 'Create Contact' });
-})
-
-// @desc    Get a single Contact
-router.route('/:id').get((req, res) => {
-    res.status(200).json({ message: `Get Contact ${req.params.id}` });
-})
-
-// @desc    Update a Contact
-router.route('/:id').put((req, res) => {
-    res.status(200).json({ message: `Update Contact ${req.params.id}` });
-})
-
-// @desc    Delete a Contact
-router.route('/:id').delete((req, res) => {
-    res.status(200).json({ message: `Delete Contact ${req.params.id}` });
-})
+// @desc    Get a single Contact && Update a Contact && Delete a Contact
+router.route('/:id').get(getContact).put(updateContact).delete(deleteContact);
 
 // Exporting the Router
 module.exports = router;
