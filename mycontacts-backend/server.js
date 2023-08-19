@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
@@ -14,7 +15,9 @@ app.get('/', (req, res) => {
 // For a better project structure, we will create a folder, which will handle all our Routes.
 
 // MIDDLEWARE
+app.use(express.json());
 app.use('/api/contacts', require('./routes/contactRoutes'));            // provide router path inside the require() function
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

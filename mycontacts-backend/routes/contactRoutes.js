@@ -5,7 +5,7 @@ const { getAllContacts, createContact, getContact, updateContact, deleteContact 
 const express = require('express');
 const router = express.Router();
 
-// Define each Route, and then use .get() method to handle GET request
+// Define each Route, and then use .get()/post()/put()/delete() method to handle HTTP request
 
 // @desc    Get all contacts && Create a contact
 router.route('/').get(getAllContacts).post(createContact);

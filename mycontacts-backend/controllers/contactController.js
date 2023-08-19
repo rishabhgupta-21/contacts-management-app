@@ -13,6 +13,17 @@ const getAllContacts = (req, res) => {
 // @route   POST /api/contacts
 // @access  public
 const createContact = (req, res) => {
+    // Error Handling via Express
+    console.log(req.body);
+
+    const { name, email, phone } = req.body;
+
+    // 400 - Bad Request
+    if (!name || !email || !phone) {
+        res.status(400);
+        throw new Error('All fields are Mandatory!');
+    }
+
     res.status(201).json({ message: 'Create Contact' });                // 201 - Resource Created
 }
 
