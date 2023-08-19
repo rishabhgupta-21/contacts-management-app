@@ -1,8 +1,38 @@
+const { constants } = require('../constants');
+
 const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode ? res.statusCode : 500;    // 500 - Internal Server Error
 
-    res.status(statusCode).json({ title: "Not Found", message: err.message, stackTrace: err.stack });
-    res.status(statusCode).json({ title: "Validation Failed", message: err.message, stackTrace: err.stack });
+    // We need different kinds of error messages for different kinds of errors.
+    // We can use the statusCode to determine the type of error.
+
+    switch (statusCode) {
+        case constants.VALIDATION_ERROR:
+            res.status(statusCode).json({ title: "Validation Failed", message: err.message, stackTrace: err.stack });
+            break;
+
+        case constants.UNAUTHORIZED:
+            res.status(statusCode).json({ title: "Unauthorized", message: err.message, stackTrace: err.stack });
+            break;
+
+        case constants.FORBIDDEN:
+            res.status(statusCode).json({ title: "Forbidden", message: err.message, stackTrace: err.stack });
+            break;
+
+        case constants.NOT_FOUND:
+            res.status(statusCode).json({ title: "Not Found", message: err.message, stackTrace: err.stack });
+            break;
+
+        case constants.INTERNAL_SERVER_ERROR:
+            res.status(statusCode).json({ title: "Internal Server Error", message: err.message, stackTrace: err.stack });
+            break;
+
+        default:
+            console.log("No error - all good!");
+            break;
+    }
+
+
 
     // NOTE: We can also write a condition to only write the stackTrace in the response, if we are in development mode (dev).
     // if (process.env.NODE_ENV === 'dev') {
