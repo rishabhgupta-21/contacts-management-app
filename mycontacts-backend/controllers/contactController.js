@@ -1,18 +1,22 @@
 // Controllers will contain the LOGIC for all our Responses to all Requests.
 // Controllers will also connect with our Database.
 
+// Whenever we interact with MongoDB, we always get a Promise. Sooooo
+// To handle errors inside the now-async routes (without Try-Catch blocks), we need to use the Express-Async-Handler MIDDLEWARE.
+const asyncHandler = require('express-async-handler');
+
 
 // @desc    Get all contacts
 // @route   GET /api/contacts
 // @access  public
-const getAllContacts = (req, res) => {
+const getAllContacts = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Get all Contacts' });
-}
+})
 
 // @desc    Create a contact
 // @route   POST /api/contacts
 // @access  public
-const createContact = (req, res) => {
+const createContact = asyncHandler(async (req, res) => {
     // Error Handling via Express
     console.log(req.body);
 
@@ -25,28 +29,28 @@ const createContact = (req, res) => {
     }
 
     res.status(201).json({ message: 'Create Contact' });                // 201 - Resource Created
-}
+})
 
 // @desc    Get a single Contact
 // @route   GET /api/contacts/:id
 // @access  public
-const getContact = (req, res) => {
+const getContact = asyncHandler(async (req, res) => {
     res.status(200).json({ message: `Get Contact ${req.params.id}` });
-}
+})
 
 // @desc    Update a Contact
 // @route   PUT /api/contacts/:id
 // @access  public
-const updateContact = (req, res) => {
+const updateContact = asyncHandler(async (req, res) => {
     res.status(200).json({ message: `Update Contact ${req.params.id}` });
-}
+})
 
 // @desc    Delete a Contact
 // @route   DELETE /api/contacts/:id
 // @access  public
-const deleteContact = (req, res) => {
+const deleteContact = asyncHandler(async (req, res) => {
     res.status(200).json({ message: `Delete Contact ${req.params.id}` });
-}
+})
 
 // Export all the methods
 module.exports = { getAllContacts, createContact, getContact, updateContact, deleteContact }
