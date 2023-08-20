@@ -13,3 +13,11 @@ const connectDb = async () => {
 }
 
 module.exports = connectDb;
+
+// What is process.exit(1)?
+// process.exit(1) will stop the server from running. It will stop the server from listening to the PORT.
+// process.exit(1) is used to exit the process with a 'failure' code. It will stop the server from running.
+// process.exit(0) is used to exit the process with a 'success' code. It will stop the server from running.
+
+// What happens after that, on the client's end?
+// The client will get a 'connection refused' error.
