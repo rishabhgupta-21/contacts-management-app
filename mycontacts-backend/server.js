@@ -1,9 +1,14 @@
 const express = require('express');
+const connectDb = require('./config/dbConnection');
 const dotenv = require('dotenv').config();
 const errorHandler = require('./middleware/errorHandler');
 
+// Connect to MongoDB
+connectDb();
+// Create an Express App
 const app = express();
 
+// Define a PORT
 const port = process.env.PORT || 5000;
 
 // Home Page Route - example (self)
