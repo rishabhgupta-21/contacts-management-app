@@ -1,6 +1,7 @@
 // To handle errors inside the now-async routes (without Try-Catch blocks), we need to use the Express-Async-Handler MIDDLEWARE.
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 // @desc    Register a user
@@ -39,7 +40,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
         res.status(201).json({ _id: user.id, username: user.username, email: user.email });
-    } else {
+    }
+    else {
         res.status(400);
         throw new Error("Invalid User Data!");
     }
@@ -49,7 +51,48 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST/api/users/login
 // @access  public
 const loginUser = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: "Successful Logged in the User!" });
+    // To login, we need email & password
+    const { email, password } = req.body;
+    // Validation Check
+    if (!email || !password) {
+        res.status(400);
+        throw new Error("All fields are Mandatory!");
+    }
+
+    // Check if User exists
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        res.status(401);
+        throw new Error("Invalid Email!");
+    }
+
+    // Compare password to hashedPassword that is stored in DB
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+
+    if (passwordMatch) {
+        console.log(`User logged in: ${user}`);
+
+        // Create Access Token (JWT)
+        const accessToken = jwt.sign({      // payload
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+            },
+        },
+            process.env.JWT_SECRET,     // secret
+            { expiresIn: '2m' }         // expiry time
+        );
+
+        // Send back the Access Token to the Client
+        res.status(200).json({ accessToken });
+    }
+    else {
+        res.status(401);                        // Unauthorized
+        throw new Error("Invalid Password!");
+    }
 });
 
 // @desc    Get current user info
