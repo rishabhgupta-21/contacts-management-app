@@ -94,3 +94,11 @@ const deleteContact = asyncHandler(async (req, res) => {
 
 // Export all the methods
 module.exports = { getAllContacts, createContact, getContact, updateContact, deleteContact }
+
+
+// Why are we not using Try-Catch blocks OR calling the next() function anywhere in our controllers or routes?
+// Because we are using the Express-Async-Handler Middleware, which will handle all the errors for us.
+// We just need to throw an error, and the Express-Async-Handler Middleware will handle it for us.
+// We just need to use the asyncHandler() function, and pass our async function as an argument to it.
+// The asyncHandler() function will return a function, which we will use as a callback function for our routes.
+// This callback function will be an async function, which will handle all the errors for us.

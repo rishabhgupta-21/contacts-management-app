@@ -50,3 +50,16 @@ module.exports = errorHandler;
 // We can also call it in our routes file, like this:
 // const errorHandler = require('../middleware/errorHandler');
 // router.use(errorHandler);
+
+// What does 'next' specify in the errorHandler function?
+// The 'next' parameter is a callback function that we need to call in our controller, like this:
+// const errorHandler = require('../middleware/errorHandler');
+// errorHandler(err, req, res, next);
+// This is because we need to pass the error to the next middleware, which is the errorHandler middleware.
+// If we don't pass the error to the next middleware, then the errorHandler middleware will not be called.
+// This is because the errorHandler middleware is the last middleware in the chain of middlewares.
+
+// Why are we not calling the next() function in the errorHandler middleware?
+// Because the errorHandler middleware is the last middleware in the chain of middlewares.
+// There is no next middleware after the errorHandler middleware.
+// So, we don't need to call the next() function in the errorHandler middleware.

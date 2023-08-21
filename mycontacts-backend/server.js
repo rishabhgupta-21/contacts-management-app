@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
 // MIDDLEWARE
 app.use(express.json());
 app.use('/api/contacts', require('./routes/contactRoutes'));            // provide router path inside the require() function
+app.use('/api/users', require('./routes/userRoutes'));
 app.use(errorHandler);
 
 app.listen(port, () => {

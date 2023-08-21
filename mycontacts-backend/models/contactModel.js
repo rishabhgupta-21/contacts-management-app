@@ -23,6 +23,6 @@ const contactSchema = mongoose.Schema({
 // Return a Model compiled from this Schema
 module.exports = mongoose.model('Contact', contactSchema);
 
-// The first argument is the singular name of the collection your model is for.
+// The first argument is the singular name of the COLLECTION your model is for.
 // Mongoose automatically looks for the plural, lowercased version of your model name.
 // Thus, for the example above, the model Contact is for the 'contacts' collection in the database.
