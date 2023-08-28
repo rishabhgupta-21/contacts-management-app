@@ -42,15 +42,6 @@ const errorHandler = (err, req, res, next) => {
 
 module.exports = errorHandler;
 
-// How does thus Error Handler middleware work? Does it get called automatically when an error is thrown?
-// No, it does not get called automatically. We need to call it manually in our code.
-// For example, in our controller, we can call it like this:
-// const errorHandler = require('../middleware/errorHandler');
-// errorHandler(err, req, res, next);
-// We can also call it in our routes file, like this:
-// const errorHandler = require('../middleware/errorHandler');
-// router.use(errorHandler);
-
 // What does 'next' specify in the errorHandler function?
 // The 'next' parameter is a callback function that we need to call in our controller, like this:
 // const errorHandler = require('../middleware/errorHandler');

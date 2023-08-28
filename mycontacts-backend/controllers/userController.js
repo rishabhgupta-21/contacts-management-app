@@ -27,7 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    console.log(`Hashed Password: ${hashedPassword}`);
+    // console.log(`Hashed Password: ${hashedPassword}`);
 
     // Register (Create) the user
     const user = await User.create({
@@ -63,7 +63,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-        res.status(401);
+        res.status(401);        // Unauthorized
         throw new Error("Invalid Email!");
     }
 
@@ -83,7 +83,7 @@ const loginUser = asyncHandler(async (req, res) => {
             },
         },
             process.env.JWT_SECRET,     // secret
-            { expiresIn: '2m' }         // expiry time
+            { expiresIn: '1d' }         // expiry time
         );
 
         // Send back the Access Token to the Client
@@ -99,7 +99,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET/api/users/current
 // @access  private
 const currentUser = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: "Successfully received Current User Information!" });
+    res.status(200).json(req.user);
 });
 
 module.exports = { loginUser, registerUser, currentUser };

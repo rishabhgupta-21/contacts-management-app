@@ -6,7 +6,6 @@
 const asyncHandler = require('express-async-handler');
 
 // Applying CRUD Operations for each API.
-// Basically, we want to store our data in the database, and then retrieve it from the database.
 const Contact = require('../models/contactModel');
 
 
@@ -26,7 +25,7 @@ const createContact = asyncHandler(async (req, res) => {
     console.log(req.body);
     const { name, email, phone } = req.body;
 
-    // Error Handling via Express-Async-Handler
+    // Error Handling
     // 400 - Bad Request
     if (!name || !email || !phone) {
         res.status(400);

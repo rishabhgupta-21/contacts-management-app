@@ -20,10 +20,11 @@ app.get('/', (req, res) => {
 // For a better project structure, we will create a folder, which will handle all our Routes.
 
 // MIDDLEWARE
-app.use(express.json());
+app.use(express.json());            // To parse the incoming JSON data in the body of the request
 app.use('/api/contacts', require('./routes/contactRoutes'));            // provide router path inside the require() function
 app.use('/api/users', require('./routes/userRoutes'));
 app.use(errorHandler);
+// Error Handler Middleware - does not need a path, because it will be called automatically when an error is thrown.
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
