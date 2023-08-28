@@ -5,24 +5,23 @@
 // To handle errors inside the now-async routes (without Try-Catch blocks), we need to use the Express-Async-Handler MIDDLEWARE.
 const asyncHandler = require('express-async-handler');
 
-// Applying CRUD Operations for each API.
+// Applying CRUD Operations for each API - only for the particular logged-in user that makes the request.
 const Contact = require('../models/contactModel');
-
 
 
 // @desc    Get all contacts
 // @route   GET /api/contacts
-// @access  public
+// @access  private
 const getAllContacts = asyncHandler(async (req, res) => {
-    const contacts = await Contact.find({});            // {} specifies that we want to find ALL the contacts.
+    const contacts = await Contact.find({ user_id: req.user.id });            // {} specifies that we want to find ALL the contacts.
     res.status(200).json(contacts);
 })
 
 // @desc    Create a contact
 // @route   POST /api/contacts
-// @access  public
+// @access  private
 const createContact = asyncHandler(async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const { name, email, phone } = req.body;
 
     // Error Handling
@@ -34,9 +33,10 @@ const createContact = asyncHandler(async (req, res) => {
 
     // Create a new Contact
     const contact = await Contact.create({
-        'name': name,
-        'email': email,
-        'phone': phone
+        user_id: req.user.id,
+        name: name,
+        email: email,
+        phone: phone
     })
 
     res.status(201).json(contact);                // 201 - Resource Created
@@ -44,9 +44,9 @@ const createContact = asyncHandler(async (req, res) => {
 
 // @desc    Get a single Contact
 // @route   GET /api/contacts/:id
-// @access  public
+// @access  private
 const getContact = asyncHandler(async (req, res) => {
-    const contact = await Contact.findById(req.params.id);
+    const contact = await Contact.findOne({ user_id: req.user.id, _id: req.params.id });
 
     // Handle potential error - if the contact with this ID is not found - 404
     if (!contact) {
@@ -59,34 +59,34 @@ const getContact = asyncHandler(async (req, res) => {
 
 // @desc    Update a Contact
 // @route   PUT /api/contacts/:id
-// @access  public
+// @access  private
 const updateContact = asyncHandler(async (req, res) => {
     // Check if contact is found first
-    const contact = await Contact.findById(req.params.id);
+    const contact = await Contact.findOne({ user_id: req.user.id, _id: req.params.id });
     if (!contact) {
         res.status(404);
         throw new Error('Contact not found!');
     }
 
     // Update the contact
-    const updatedContact = await Contact.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedContact = await Contact.findOneAndUpdate({ user_id: req.user.id, _id: req.params.id }, req.body, { new: true });
 
     res.status(200).json(updatedContact);
 })
 
 // @desc    Delete a Contact
 // @route   DELETE /api/contacts/:id
-// @access  public
+// @access  private
 const deleteContact = asyncHandler(async (req, res) => {
     // Check if contact is found first
-    const contact = await Contact.findById(req.params.id);
+    const contact = await Contact.findOne({ user_id: req.user.id, _id: req.params.id });
     if (!contact) {
         res.status(404);
         throw new Error('Contact not found!');
     }
 
     // Delete the contact
-    const deletedContact = await Contact.findByIdAndDelete(req.params.id);
+    const deletedContact = await Contact.findOneAndDelete({ user_id: req.user.id, _id: req.params.id });
 
     res.status(200).json(deletedContact);
 })

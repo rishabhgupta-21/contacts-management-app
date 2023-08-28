@@ -31,6 +31,10 @@ const validateToken = asyncHandler(async (req, res, next) => {
             next();
         })
     }
+    else {
+        res.status(401);    // Unauthorized
+        throw new Error('User is Not Authorized!');
+    }
 })
 
 module.exports = validateToken;

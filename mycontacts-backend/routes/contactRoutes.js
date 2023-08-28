@@ -1,9 +1,13 @@
 // Import controller methods
 const { getAllContacts, createContact, getContact, updateContact, deleteContact } = require('../controllers/contactController');
+const validateToken = require('../middleware/validateTokenHandler');
 
 // Create a Router
 const express = require('express');
 const router = express.Router();
+
+// Use Validate Token Middleware before accessing any Route
+router.use(validateToken);
 
 // Define each Route, and then use .get()/post()/put()/delete() method to handle HTTP request
 
